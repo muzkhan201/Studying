@@ -1,0 +1,16 @@
+---
+- name: deploy service file and deployment file on k8 cluster
+  hosts: kubernetes
+  user: root
+
+  tasks:
+    - name: create regapp deployment on k8
+      command: kubectl apply -f /root/devops-project/deployment.yaml 
+
+    - name: create service for regapp
+      command: kubectl apply -f /root/devops-project/load-balancer.yaml
+
+      #  Rolling restart of the "regapp" deployment
+    - name: rollout when you make changes to your app, if image is updated in docker hub  
+      command: kubectl rollout restart deployment.apps/regapp-deployment
+
